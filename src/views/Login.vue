@@ -4,6 +4,7 @@
     import iconeLogin from '../assets/imagens/envelope.svg';
     import iconeSenha from '../assets/imagens/chave.svg';
     import { LoginService } from '@/services/LoginService';
+    import router from '../router';
 
     const loginService = new LoginService();
 
@@ -33,6 +34,7 @@
                     }
                     this.loading = true;
                     await loginService.login({login : this.login, senha : this.senha});
+                    router.push({name : 'home'});
                 } catch (erro : any) {
                     console.log(erro);
                     if(erro?.response?.data?.erro) {
