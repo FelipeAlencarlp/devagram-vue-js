@@ -62,15 +62,15 @@
 </script>
 
 <template>
-    <div class="container-publico">
+    <div :class="['container-publico', 'cadastro']">
         <img src="../assets/imagens/logo.svg" alt="Logo Devagram" class="logo" />
         <form>
-            <div>
+            <div class="container-upload-imagem">
                 <div>
-                    <img :src="iconeAvatar" alt="Foto do usuário" />
+                    <img :src="iconeAvatar" alt="Foto do usuário" class="avatar" />
                 </div>
 
-                <input type="file" accept="image/*" />
+                <input type="file" accept="image/*" class="oculto" />
             </div>
 
             <p v-if="erro" class="erro">{{ erro }}</p>

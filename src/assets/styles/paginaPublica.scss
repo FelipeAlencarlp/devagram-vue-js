@@ -8,9 +8,30 @@
     align-items: center;
     justify-content: center;
 
+    &.cadastro {
+        .logo {
+            display: none;
+        }
+    }
+
     .logo {
         margin-bottom: 40px;
         width: 40%;
+    }
+
+    .container-upload-imagem {
+        cursor: pointer;
+
+        &::after {
+            content: url('../imagens/camera.svg');
+            width: 48px;
+            height: 48px;
+            position: relative;
+            left: 80px;
+            top: -30px;
+            bottom: 0px;
+            margin: auto;
+        }
     }
 
     .erro {
@@ -60,7 +81,7 @@
     @media screen and (min-width: $desktopBreakpoint) {
         width: 100%;
         height: 100%;
-        padding: 10%;
+        padding: 80px;
         background-color: white;
         background-image: none;
 
@@ -73,6 +94,21 @@
             min-width: 350px;
             width: 30%;
             margin: 0px;
+        }
+
+        &.cadastro {
+            .logo {
+                display: block;
+            }
+
+            .link {
+                display: flex;
+                flex-direction: row;
+
+                p {
+                    margin-right: 10px;
+                }
+            }
         }
 
         .erro {
