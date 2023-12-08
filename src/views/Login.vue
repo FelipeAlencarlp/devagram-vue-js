@@ -3,12 +3,16 @@
     import { defineComponent } from 'vue';
     import iconeLogin from '../assets/imagens/envelope.svg';
     import iconeSenha from '../assets/imagens/chave.svg';
+    import { LoginService } from '@/services/LoginService';
+
+    const loginService = new LoginService();
 
     export default defineComponent({
         setup() {
             return {
                 iconeLogin,
-                iconeSenha
+                iconeSenha,
+                loginService
             }
         },
         data() {
@@ -20,12 +24,24 @@
             };
         },
         methods: {
-            efetuarLogin() {
-                if (!this.login && !this.senha) {
-                    this.erro = 'Favor preencher o formulário';
-                    return;
+            async efetuarLogin() {
+                try {
+                    if (!this.login && !this.login.trim()
+                        && !this.senha && !this.senha.trim()) {
+                        this.erro = 'Favor preencher o formulário';
+                        return;
+                    }
+                    this.loading = true;
+                    await loginService.login({login : this.login, senha : this.senha});
+                } catch (erro : any) {
+                    console.log(erro);
+                    if(erro?.response?.data?.erro) {
+                        this.erro = erro?.response?.data?.erro;
+                    } else {
+                        this.erro = 'Não foi possível efetuar o login, tente novamente!';
+                    }
                 }
-                alert('Login efetuado' + this.login + ', ' + this.senha);
+                this.loading = false;
             },
             setLogin(v : any) {
                 this.login = v;
@@ -33,6 +49,11 @@
             setSenha(v : any) {
                 this.senha = v;
             },
+        },
+        computed: {
+            buttonText() {
+                return this.loading ? '... Carregando' : 'Login';
+            }
         },
         components: { InputPublico }
     });
@@ -50,7 +71,8 @@
             <InputPublico :icone="iconeSenha" alt="Insira a senha" tipo="password"
                     placeholder="Senha" :modelValue="senha" @setInput="setSenha" />
 
-            <button @click.enter.prevent="efetuarLogin">Login</button>
+            <button @click.enter.prevent="efetuarLogin"
+                :disabled="loading">{{ buttonText }}</button>
             <div class="link">
                 <p>Não possuí uma conta?</p>
                 <a>Faça seu cadastro agora!</a>
