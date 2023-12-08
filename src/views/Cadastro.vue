@@ -6,6 +6,10 @@
     import iconeSenha from '../assets/imagens/chave.svg';
     import iconeUsuario from '../assets/imagens/usuarioAtivo.svg';
     import iconeAvatar from '../assets/imagens/avatar.svg';
+    import { CadastroService } from '../services/CadastroService';
+    import router from '../router';
+
+    const cadastroService = new CadastroService();
 
     export default defineComponent({
         setup() {
@@ -13,7 +17,8 @@
                 iconeLogin,
                 iconeSenha,
                 iconeUsuario,
-                iconeAvatar
+                iconeAvatar,
+                cadastroService
             }
         },
         data() {
@@ -30,7 +35,33 @@
         methods: {
             async cadastrar() {
                 try {
-                    
+                    this.erro = "";
+                    if(!this.nome || !this.nome.trim() ||
+                        !this.email || !this.email.trim() ||
+                        !this.senha || !this.senha.trim() ||
+                        !this.confirmacao || !this.confirmacao.trim()) {
+                            return this.erro = "Favor preencher todo o formulário";
+                        }
+
+                    if(this.senha !== this.confirmacao) {
+                        return this.erro = "Senha e confirmação não são iguais";
+                    }
+
+                    this.loading = true;
+
+                    const formDataRequisicao = new FormData();
+
+                    formDataRequisicao.append('nome', this.nome);
+                    formDataRequisicao.append('email', this.email);
+                    formDataRequisicao.append('senha', this.senha);
+
+                    if(this.imagem.arquivo) {
+                        formDataRequisicao.append('file', this.imagem.arquivo);
+                    }
+
+                    await cadastroService.cadastrar(formDataRequisicao);
+                    router.push({ name : 'login', query : {cadastroComSucesso : 'true'} });
+
                 } catch (erro : any) {
                     console.log(erro);
                     if(erro?.response?.data?.erro) {
