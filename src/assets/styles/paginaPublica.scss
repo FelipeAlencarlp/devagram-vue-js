@@ -19,21 +19,6 @@
         width: 40%;
     }
 
-    .container-upload-imagem {
-        cursor: pointer;
-
-        &::after {
-            content: url('../imagens/camera.svg');
-            width: 48px;
-            height: 48px;
-            position: relative;
-            left: 80px;
-            top: -30px;
-            bottom: 0px;
-            margin: auto;
-        }
-    }
-
     .erro {
         text-align: center;
         color: $erro;
